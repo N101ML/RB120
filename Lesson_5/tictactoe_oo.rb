@@ -88,10 +88,12 @@ class Square
 end
 
 class Player
-  attr_reader :marker
+  COMPUTER_NAMES = ['R2D2', 'C3PO', 'Hal', 'Robocop', 'T-800']
+  attr_accessor :marker, :name
 
   def initialize(marker)
     @marker = marker
+    @name = nil
   end
 end
 
@@ -131,6 +133,8 @@ class TTTGame
   def play
     clear
     display_welcome_message
+    human_pick
+    computer_pick
     main_game
     display_goodbye_message
   end
@@ -143,14 +147,30 @@ class TTTGame
   end
 
   def display_goodbye_message
-    puts "Thanks for playing Tic Tac Toe! Goodbye!"
+    puts "Thanks for playing Tic Tac Toe #{human.name}! Goodbye!"
   end
 
   def display_board
-    puts "You're a #{human.marker}. Computer is a #{computer.marker}."
+    puts "#{human.name} is a #{human.marker}. #{computer.name} is a #{computer.marker}."
     puts ""
     board.draw
     puts ""
+  end
+
+  def human_pick
+    puts "Choose a marker for yourself: "
+    mark = gets.chomp
+    human.marker = mark
+
+    puts "Choose a name for yourself: "
+    name = gets.chomp
+    human.name = name
+    clear
+  end
+
+  def computer_pick
+    computer.marker = ("a".."z").to_a.sample
+    computer.name = Player::COMPUTER_NAMES.sample
   end
 
   def human_moves
