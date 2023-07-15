@@ -10,17 +10,13 @@ class GuessingGame
   end
 
   def play
-    reset
+    @winning_number = rand(RANGE)
     loop do
       guess
       break if out_of_guesses || winner?
       feedback
     end
     result
-  end
-
-  def reset
-    @winning_number = rand(RANGE)
   end
 
   def winner?

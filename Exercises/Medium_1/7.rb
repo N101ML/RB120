@@ -1,12 +1,11 @@
 require 'pry'
 
 class GuessingGame
-  MAX_GUESSES = 7
-  RANGE = 1..100
 
-  def initialize
-    @guesses_left = MAX_GUESSES
+  def initialize(low_end, high_end)
     @guess = nil
+    @range = (low_end..high_end)
+    @guesses_left = Math.log2(@range.size).to_i + 1
   end
 
   def play
@@ -20,7 +19,7 @@ class GuessingGame
   end
 
   def reset
-    @winning_number = rand(RANGE)
+    @winning_number = rand(@range)
   end
 
   def winner?
@@ -29,11 +28,11 @@ class GuessingGame
 
   def guess
     puts "You have #{@guesses_left} guesses remaining."
-    puts "Enter a number between #{RANGE.first} and #{RANGE.last}: "
+    puts "Enter a number between #{@range.first} and #{@range.last}: "
     loop do
       @guess = gets.chomp.to_i
-      break if (RANGE).include?(@guess)
-      puts "Invalid guess. Enter a number between #{RANGE.first} and #{RANGE.last}:"
+      break if (@range).include?(@guess)
+      puts "Invalid guess. Enter a number between #{@range.first} and #{@range.last}:"
     end
     @guesses_left -= 1
   end
@@ -57,5 +56,5 @@ class GuessingGame
   end
 end
 
-game = GuessingGame.new
+game = GuessingGame.new(501, 1500)
 game.play
